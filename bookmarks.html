@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmark Saya - Muslim Q&A</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">☪</span>
+                <span class="logo-text">Muslim Q&A</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="questions.html" class="nav-link">Pertanyaan</a></li>
+                <li><a href="articles.html" class="nav-link">Artikel</a></li>
+                <li><a href="bookmarks.html" class="nav-link active">Bookmark</a></li>
+            </ul>
+            <div class="nav-auth">
+                <button class="btn-logout" id="logoutBtn">Keluar</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <div class="page-header">
+            <h1 class="page-title">Bookmark Saya</h1>
+        </div>
+        
+        <div id="bookmarksList">
+            <!-- EMPTY STATE DENGAN GAMBAR PNG -->
+            <div class="text-center" style="padding: 64px 24px;">
+                <div class="image-wrapper" style="max-width: 300px; margin: 0 auto 24px;">
+                    <img src="images/empty-bookmarks.png" alt="Belum ada bookmark">
+                </div>
+                <p style="color: var(--slate-600); font-size: 16px; margin-bottom: 16px;">Belum ada pertanyaan yang di-bookmark.</p>
+                <a href="questions.html" class="btn-primary">Jelajahi Pertanyaan</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Muslim Q&A. Platform Tanya Jawab Islami.</p>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/bookmarks.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', loadBookmarks);
+    </script>
+</body>
+</html>

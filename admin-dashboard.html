@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - Muslim Q&A</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">☪</span>
+                <span class="logo-text">Muslim Q&A</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="questions.html" class="nav-link">Pertanyaan</a></li>
+                <li><a href="articles.html" class="nav-link">Artikel</a></li>
+                <li><a href="admin-dashboard.html" class="nav-link active">Dashboard</a></li>
+            </ul>
+            <div class="nav-auth">
+                <button class="btn-logout" id="logoutBtn">Keluar</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <div class="page-header">
+            <h1 class="page-title">Dashboard Admin</h1>
+        </div>
+
+        <!-- Statistik Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalUsers">0</div>
+                <div class="stat-label">Total Pengguna</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalPertanyaan">0</div>
+                <div class="stat-label">Total Pertanyaan</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalJawaban">0</div>
+                <div class="stat-label">Total Jawaban</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalArtikel">0</div>
+                <div class="stat-label">Total Artikel</div>
+            </div>
+        </div>
+
+        <!-- Pertanyaan Terbaru -->
+        <div style="margin-top: 3rem;">
+            <h2 style="color: var(--primary-green); margin-bottom: 1.5rem;">Pertanyaan Terbaru</h2>
+            <div class="recent-list" id="recentQuestions">
+                <p style="text-align: center; color: var(--text-muted);">Memuat data...</p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div style="margin-top: 3rem;">
+            <h2 style="color: var(--primary-green); margin-bottom: 1.5rem;">Aksi Cepat</h2>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="questions.html" class="btn-primary">Lihat Semua Pertanyaan</a>
+                <a href="articles.html" class="btn-primary">Kelola Artikel</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Muslim Q&A. Platform Tanya Jawab Islami.</p>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

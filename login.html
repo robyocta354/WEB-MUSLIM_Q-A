@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Muslim Q&A</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">☪</span>
+                <span class="logo-text">Muslim Q&A</span>
+            </a>
+        </nav>
+    </header>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <!-- LOGO PNG (OPTIONAL) -->
+            <div class="image-wrapper" style="max-width: 80px; margin: 0 auto 16px;">
+                <img src="images/logo-muslim-qa.png" alt="Logo Muslim Q&A">
+            </div>
+            <h1 class="auth-logo">Muslim Q&A</h1>
+            <h2 class="auth-title">Masuk ke Akun</h2>
+            <p class="auth-subtitle">Selamat datang kembali! Silakan masuk untuk melanjutkan</p>
+        </div>
+        
+        <div id="message" class="message"></div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" id="username" placeholder="Masukkan username" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-input" id="password" placeholder="Masukkan password" required>
+            </div>
+            <button type="submit" class="btn-submit">Masuk</button>
+        </form>
+        
+        <div class="auth-link">
+            Belum punya akun? <a href="register.html">Daftar sekarang</a>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const messageEl = document.getElementById('message');
+            
+            try {
+                const result = await API.login(username, password);
+                
+                if (result.user) {
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    messageEl.textContent = 'Login berhasil! Mengalihkan...';
+                    messageEl.className = 'message success';
+                    messageEl.style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = 'questions.html';
+                    }, 1500);
+                } else {
+                    messageEl.textContent = result.error || 'Login gagal';
+                    messageEl.className = 'message error';
+                    messageEl.style.display = 'block';
+                }
+            } catch (error) {
+                messageEl.textContent = 'Terjadi kesalahan server';
+                messageEl.className = 'message error';
+                messageEl.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

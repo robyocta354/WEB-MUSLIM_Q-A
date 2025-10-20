@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muslim Q&A - Platform Tanya Jawab Islami Terpercaya</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">☪</span>
+                <span class="logo-text">Muslim Q&A</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Beranda</a></li>
+                <li><a href="questions.html" class="nav-link">Pertanyaan</a></li>
+                <li><a href="articles.html" class="nav-link">Artikel</a></li>
+                <li><a href="bookmarks.html" class="nav-link" id="bookmarkLink" style="display:none;">Bookmark</a></li>
+                <li><a href="admin-dashboard.html" class="nav-link" id="adminLink" style="display:none;">Dashboard</a></li>
+            </ul>
+            <div class="nav-auth">
+                <div class="notification-icon" id="notificationIcon" style="display:none;">
+                    🔔
+                    <span class="notification-badge" id="notificationBadge" style="display:none;"></span>
+                </div>
+                <a href="login.html" class="btn-login" id="loginBtn">Masuk</a>
+                <a href="register.html" class="btn-register" id="registerBtn">Daftar</a>
+                <button class="btn-logout" id="logoutBtn" style="display:none;">Keluar</button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <span class="hero-badge">✨ Platform Tanya Jawab Islami</span>
+                <h1 class="hero-title">Muslim Q&A</h1>
+                <h2 class="hero-subtitle">Belajar Islam dengan Mudah dan Terpercaya</h2>
+                <p class="hero-description">
+                    Dapatkan jawaban dari para ahli dan ustadz terpercaya untuk pertanyaan seputar Islam. 
+                    Belajar, berbagi, dan tingkatkan pemahaman agama bersama komunitas Muslim yang peduli.
+                </p>
+                <div class="hero-buttons">
+                    <a href="questions.html" class="btn-primary">Mulai Bertanya</a>
+                    <a href="articles.html" class="btn-secondary">Baca Artikel</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <!-- GANTI DENGAN GAMBAR PNG ANDA -->
+                <div class="image-wrapper">
+                    <img src="images/hero-muslim-qa.png" alt="Ilustrasi Muslim Q&A - Platform Tanya Jawab Islam Terpercaya">
+                </div>
+                <!-- ATAU PAKAI PLACEHOLDER INI JIKA BELUM ADA GAMBAR -->
+                <!-- <div class="hero-image-placeholder">
+                    <div class="quran-icon">📖</div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="features-header">
+                <span class="section-badge">🌟 Fitur Unggulan</span>
+                <h2 class="section-title">Mengapa Memilih Muslim Q&A?</h2>
+                <p class="section-description">
+                    Platform lengkap untuk belajar Islam dengan cara yang modern, interaktif, dan terpercaya
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <!-- GANTI DENGAN ICON PNG ANDA -->
+                        <img src="images/icon-tanya-jawab.png" alt="Icon Tanya Jawab Islami">
+                        <!-- ATAU PAKAI EMOJI PLACEHOLDER -->
+                        <!-- <div class="feature-icon">💬</div> -->
+                    </div>
+                    <h3>Tanya Jawab Islami</h3>
+                    <p>Ajukan pertanyaan dan dapatkan jawaban dari ahli Islam yang terpercaya dengan referensi Al-Quran dan Hadits</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <!-- GANTI DENGAN ICON PNG ANDA -->
+                        <img src="images/icon-terverifikasi.png" alt="Icon Jawaban Terverifikasi">
+                        <!-- ATAU PAKAI EMOJI PLACEHOLDER -->
+                        <!-- <div class="feature-icon">✅</div> -->
+                    </div>
+                    <h3>Jawaban Terverifikasi</h3>
+                    <p>Setiap jawaban dari admin dan ustadz memiliki badge "Terpercaya" untuk memastikan kualitas informasi</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <!-- GANTI DENGAN ICON PNG ANDA -->
+                        <img src="images/icon-artikel.png" alt="Icon Artikel Islami">
+                        <!-- ATAU PAKAI EMOJI PLACEHOLDER -->
+                        <!-- <div class="feature-icon">📚</div> -->
+                    </div>
+                    <h3>Artikel Islami</h3>
+                    <p>Baca artikel berkualitas tentang Islam, fiqih, akidah, dan kehidupan muslim sehari-hari</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <!-- GANTI DENGAN ICON PNG ANDA -->
+                        <img src="images/icon-bookmark.png" alt="Icon Bookmark Favorit">
+                        <!-- ATAU PAKAI EMOJI PLACEHOLDER -->
+                        <!-- <div class="feature-icon">🔖</div> -->
+                    </div>
+                    <h3>Simpan Favorit</h3>
+                    <p>Bookmark pertanyaan dan artikel penting untuk dibaca kembali kapan saja Anda membutuhkannya</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2 class="cta-title">Bergabunglah dengan Komunitas Kami</h2>
+            <p class="cta-description">
+                Ribuan Muslim telah mendapatkan jawaban dan belajar bersama. Jadilah bagian dari komunitas yang peduli dengan ilmu agama!
+            </p>
+            <a href="register.html" class="cta-button">Daftar Gratis Sekarang</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Muslim Q&A. Platform Tanya Jawab Islami Terpercaya.</p>
+            <p>Belajar Islam dengan Mudah dan Menyenangkan</p>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/notifications.js"></script>
+</body>
+</html>

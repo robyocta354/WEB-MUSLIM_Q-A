@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Akun - Muslim Q&A</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">☪</span>
+                <span class="logo-text">Muslim Q&A</span>
+            </a>
+        </nav>
+    </header>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <!-- LOGO PNG (OPTIONAL) -->
+            <div class="image-wrapper" style="max-width: 80px; margin: 0 auto 16px;">
+                <img src="images/logo-muslim-qa.png" alt="Logo Muslim Q&A">
+            </div>
+            <h1 class="auth-logo">Muslim Q&A</h1>
+            <h2 class="auth-title">Daftar Akun Baru</h2>
+            <p class="auth-subtitle">Bergabunglah dengan komunitas Muslim yang peduli ilmu agama</p>
+        </div>
+        
+        <div id="message" class="message"></div>
+        
+        <form id="registerForm">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" id="username" placeholder="Pilih username unik" required minlength="3">
+                <small style="color: var(--slate-500); font-size: 13px;">Minimal 3 karakter</small>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-input" id="password" placeholder="Buat password yang kuat" required minlength="6">
+                <small style="color: var(--slate-500); font-size: 13px;">Minimal 6 karakter</small>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Konfirmasi Password</label>
+                <input type="password" class="form-input" id="confirmPassword" placeholder="Ketik ulang password Anda" required>
+            </div>
+            <button type="submit" class="btn-submit">Daftar Sekarang</button>
+        </form>
+        
+        <div class="auth-link">
+            Sudah punya akun? <a href="login.html">Masuk sekarang</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Muslim Q&A. Platform Tanya Jawab Islami.</p>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const messageEl = document.getElementById('message');
+            
+            // Validasi username
+            if (username.length < 3) {
+                messageEl.textContent = 'Username minimal 3 karakter!';
+                messageEl.className = 'message error';
+                messageEl.style.display = 'block';
+                return;
+            }
+            
+            // Validasi password
+            if (password.length < 6) {
+                messageEl.textContent = 'Password minimal 6 karakter!';
+                messageEl.className = 'message error';
+                messageEl.style.display = 'block';
+                return;
+            }
+            
+            // Validasi password match
+            if (password !== confirmPassword) {
+                messageEl.textContent = 'Password tidak cocok! Silakan periksa kembali.';
+                messageEl.className = 'message error';
+                messageEl.style.display = 'block';
+                return;
+            }
+            
+            try {
+                const result = await API.register(username, password);
+                
+                if (result.message && !result.error) {
+                    messageEl.textContent = '✅ Registrasi berhasil! Mengalihkan ke halaman login...';
+                    messageEl.className = 'message success';
+                    messageEl.style.display = 'block';
+                    
+                    // Reset form
+                    document.getElementById('registerForm').reset();
+                    
+                    // Redirect ke login setelah 2 detik
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    messageEl.textContent = result.error || 'Registrasi gagal. Silakan coba lagi.';
+                    messageEl.className = 'message error';
+                    messageEl.style.display = 'block';
+                }
+            } catch (error) {
+                messageEl.textContent = 'Terjadi kesalahan server. Silakan coba lagi nanti.';
+                messageEl.className = 'message error';
+                messageEl.style.display = 'block';
+            }
+        });
+        
+        // Real-time password match validation
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                this.style.borderColor = '#DC2626';
+            } else {
+                this.style.borderColor = 'var(--slate-200)';
+            }
+        });
+    </script>
+</body>
+</html>

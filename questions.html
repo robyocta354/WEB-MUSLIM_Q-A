@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertanyaan - Muslim Q&A</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">☪</span>
+                <span class="logo-text">Muslim Q&A</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="questions.html" class="nav-link active">Pertanyaan</a></li>
+                <li><a href="articles.html" class="nav-link">Artikel</a></li>
+                <li><a href="bookmarks.html" class="nav-link" id="bookmarkLink" style="display:none;">Bookmark</a></li>
+                <li><a href="admin-dashboard.html" class="nav-link" id="adminLink" style="display:none;">Dashboard</a></li>
+            </ul>
+            <div class="nav-auth">
+                <a href="login.html" class="btn-login" id="loginBtn">Masuk</a>
+                <a href="register.html" class="btn-register" id="registerBtn">Daftar</a>
+                <button class="btn-logout" id="logoutBtn" style="display:none;">Keluar</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <div class="page-header">
+            <h1 class="page-title">Daftar Pertanyaan</h1>
+            <button class="btn-primary" id="newQuestionBtn" style="display:none;">Ajukan Pertanyaan</button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Cari pertanyaan tentang Islam...">
+        </div>
+
+        <div id="questionsList">
+            <!-- EMPTY STATE DENGAN GAMBAR PNG -->
+            <div class="text-center" style="padding: 64px 24px;">
+                <div class="image-wrapper" style="max-width: 300px; margin: 0 auto 24px;">
+                    <img src="images/empty-questions.png" alt="Belum ada pertanyaan">
+                </div>
+                <p style="color: var(--slate-600); font-size: 16px;">Belum ada pertanyaan. Jadilah yang pertama bertanya!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Form Pertanyaan -->
+    <div class="form-modal" id="questionModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2 style="color: var(--emerald-700); margin-bottom: 24px;">Ajukan Pertanyaan Baru</h2>
+            <form id="questionForm">
+                <div class="form-group">
+                    <label class="form-label">Judul Pertanyaan</label>
+                    <input type="text" class="form-input" id="judulPertanyaan" placeholder="Contoh: Bagaimana cara berwudhu yang benar?" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Isi Pertanyaan</label>
+                    <textarea class="form-textarea" id="isiPertanyaan" placeholder="Jelaskan pertanyaan Anda secara detail..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Kirim Pertanyaan</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Muslim Q&A. Platform Tanya Jawab Islami.</p>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/questions.js"></script>
+</body>
+</html>

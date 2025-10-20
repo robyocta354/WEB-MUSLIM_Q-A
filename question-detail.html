@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Pertanyaan - Muslim Q&A</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">☪</span>
+                <span class="logo-text">Muslim Q&A</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="questions.html" class="nav-link active">Pertanyaan</a></li>
+                <li><a href="articles.html" class="nav-link">Artikel</a></li>
+                <li><a href="bookmarks.html" class="nav-link" id="bookmarkLink" style="display:none;">Bookmark</a></li>
+            </ul>
+            <div class="nav-auth">
+                <a href="login.html" class="btn-login" id="loginBtn">Masuk</a>
+                <button class="btn-logout" id="logoutBtn" style="display:none;">Keluar</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <div id="questionDetail"></div>
+        
+        <div style="margin-top: 3rem;">
+            <h2 style="color: var(--primary-green); margin-bottom: 1.5rem;">Jawaban</h2>
+            <div id="answersList"></div>
+        </div>
+        
+        <div id="answerFormContainer" style="margin-top: 2rem; display: none;">
+            <h3 style="color: var(--primary-green); margin-bottom: 1rem;">Berikan Jawaban</h3>
+            <form id="answerForm">
+                <div class="form-group">
+                    <textarea class="form-input" id="isiJawaban" placeholder="Tulis jawaban Anda..." required style="min-height: 120px; resize: vertical;"></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Kirim Jawaban</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Muslim Q&A. Platform Tanya Jawab Islami.</p>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let currentUser = null;
+        let questionId = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            currentUser = checkAuth();
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            questionId = urlParams.get('id');
+            
+            if (!questionId) {
+                alert('Pertanyaan tidak ditemukan');
+                window.location.href = 'questions.html';
+                return;
+            }
+            
+            await loadQuestionDetail();
+            await loadAnswers();
+            
+            if (currentUser) {
+                document.getElementById('answerFormContainer').style.display = 'block';
+                setupAnswerForm();
+            }
+        });
+
+        async function loadQuestionDetail() {
+            const question = await API.getQuestion(questionId);
+            
+            if (question.error) {
+                alert('Pertanyaan tidak ditemukan');
+                window.location.href = 'questions.html';
+                return;
+            }
+            
+            const user = JSON.parse(localStorage.getItem('user'));
+            const bookmarked = user ? await API.cekBookmark(questionId, user.id) : { bookmarked: false };
+            
+            document.getElementById('questionDetail').innerHTML = `
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h1 style="color: var(--primary-green); flex: 1;">${question.judul}</h1>
+                        ${user ? `<button class="bookmark-btn ${bookmarked.bookmarked ? 'active' : ''}" onclick="toggleBookmark(${questionId})" id="bookmarkBtn">
+                            ${bookmarked.bookmarked ? '🔖 Tersimpan' : '🔖 Simpan'}
+                        </button>` : ''}
+                    </div>
+                    <div class="card-meta" style="margin-bottom: 1.5rem;">
+                        Ditanyakan oleh: <strong>${question.username}</strong> | ${formatDate(question.created_at)}
+                    </div>
+                    <div class="card-content" style="line-height: 1.8; white-space: pre-wrap;">
+                        ${question.isi}
+                    </div>
+                </div>
+            `;
+        }
+
+        async function loadAnswers() {
+            const answers = await API.getAnswers(questionId);
+            const container = document.getElementById('answersList');
+            
+            if (!Array.isArray(answers) || answers.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 2rem;">Belum ada jawaban.</p>';
+                return;
+            }
+            
+            container.innerHTML = answers.map(a => `
+                <div class="answer-item ${a.is_trusted == 1 ? 'trusted' : ''}">
+                    <div class="answer-header">
+                        <div>
+                            <span class="answer-author">${a.username}</span>
+                            ${a.is_trusted == 1 ? '<span class="badge badge-trusted">✓ Terpercaya</span>' : ''}
+                        </div>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">${formatDate(a.created_at)}</span>
+                    </div>
+                    <div class="answer-content" style="white-space: pre-wrap;">
+                        ${a.isi}
+                    </div>
+                    <div class="answer-actions">
+                        <button class="like-btn" onclick="likeAnswer(${a.id}, this)" data-answer-id="${a.id}">
+                            👍 <span id="like-count-${a.id}">0</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Load like counts
+            answers.forEach(async (a) => {
+                const likeData = await API.getLikeCount(a.id);
+                const countEl = document.getElementById(`like-count-${a.id}`);
+                if (countEl) {
+                    countEl.textContent = likeData.like_count || 0;
+                }
+            });
+        }
+
+        async function toggleBookmark(questionId) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                alert('Silakan login terlebih dahulu');
+                return;
+            }
+            
+            const status = await API.cekBookmark(questionId, user.id);
+            const btn = document.getElementById('bookmarkBtn');
+            
+            if (status.bookmarked) {
+                await API.hapusBookmark(questionId, user.id);
+                btn.textContent = '🔖 Simpan';
+                btn.classList.remove('active');
+            } else {
+                await API.tambahBookmark(questionId, user.id);
+                btn.textContent = '🔖 Tersimpan';
+                btn.classList.add('active');
+            }
+        }
+
+        async function likeAnswer(answerId, btn) {
+            if (!currentUser) {
+                alert('Silakan login untuk memberikan like');
+                return;
+            }
+            
+            const result = await API.likeAnswer(answerId, currentUser.id);
+            
+            if (result.message) {
+                btn.classList.add('liked');
+                btn.disabled = true;
+                const countEl = document.getElementById(`like-count-${answerId}`);
+                if (countEl) {
+                    countEl.textContent = parseInt(countEl.textContent) + 1;
+                }
+            } else {
+                alert(result.error || 'Anda sudah memberikan like');
+            }
+        }
+
+        function setupAnswerForm() {
+            const form = document.getElementById('answerForm');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const isi = document.getElementById('isiJawaban').value;
+                const result = await API.createAnswer(questionId, isi, currentUser.id);
+                
+                if (result.id || result.message) {
+                    alert('Jawaban berhasil dikirim!');
+                    form.reset();
+                    await loadAnswers();
+                } else {
+                    alert('Gagal mengirim jawaban: ' + (result.error || 'Error'));
+                }
+            });
+        }
+    </script>
+</body>
+</html>
