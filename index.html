@@ -21,9 +21,17 @@
                 <li><a href="admin-dashboard.html" class="nav-link" id="adminLink" style="display:none;">Dashboard</a></li>
             </ul>
             <div class="nav-auth">
-                <div class="notification-icon" id="notificationIcon" style="display:none;">
-                    🔔
-                    <span class="notification-badge" id="notificationBadge" style="display:none;"></span>
+                <div class="notification-container" id="notificationContainer" style="display:none;">
+                    <div id="notification-icon" class="notification-icon">
+                        🔔
+                        <span id="notificationBadge" class="notification-badge" style="display: none;"></span>
+                    </div>
+                    <div id="notification-dropdown" class="notification-dropdown" style="display: none;">
+                        <div class="notification-header">Notifikasi</div>
+                        <div id="notification-list" class="notification-list">
+                            <div class="notification-empty">Tidak ada notifikasi baru.</div>
+                        </div>
+                    </div>
                 </div>
                 <a href="login.html" class="btn-login" id="loginBtn">Masuk</a>
                 <a href="register.html" class="btn-register" id="registerBtn">Daftar</a>
