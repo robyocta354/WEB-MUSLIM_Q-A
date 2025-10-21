@@ -1,48 +1,45 @@
-// js/notifications.js
+// js/notifications.js - VERSI FINAL YANG SUDAH DIPERBAIKI
 
 document.addEventListener('DOMContentLoaded', () => {
+    // KITA CEK LOGIN MENGGUNAKAN 'user', BUKAN 'token'
     const user = JSON.parse(localStorage.getItem('user'));
 
-    // 1. Jika user tidak login, hentikan semua proses notifikasi
+    // 1. Jika user belum login, hentikan semua proses notifikasi.
     if (!user) {
-        console.log("Pengguna belum login, fitur notifikasi tidak aktif.");
+        console.log("Pengguna belum login. Ikon notifikasi disembunyikan.");
         return;
     }
 
-    // 2. Deklarasi semua elemen DOM yang dibutuhkan
+    // 2. Jika user sudah login, ambil semua elemen yang dibutuhkan.
     const notificationContainer = document.getElementById('notificationContainer');
     const notificationIcon = document.getElementById('notification-icon');
     const notificationDropdown = document.getElementById('notification-dropdown');
     const notificationBadge = document.getElementById('notificationBadge');
     const notificationList = document.getElementById('notification-list');
 
-    // Tampilkan ikon notifikasi karena user sudah login
+    // --> INI BAGIAN PENTINGNYA: Tampilkan lonceng karena user sudah login <--
     if (notificationContainer) {
         notificationContainer.style.display = 'block';
     }
 
-    // 3. Event listener untuk membuka/menutup dropdown (FUNGSI BARU)
+    // 3. Event listener untuk membuka/menutup dropdown
     notificationIcon.addEventListener('click', (event) => {
         event.stopPropagation();
         const isHidden = notificationDropdown.style.display === 'none';
         notificationDropdown.style.display = isHidden ? 'block' : 'none';
-
-        // Jika dropdown dibuka, ambil daftar notifikasi lengkap
         if (isHidden) {
             fetchAndShowNotifications();
         }
     });
 
-    // 4. Fungsi untuk mengambil daftar notifikasi dari backend (FUNGSI BARU)
+    // 4. Fungsi untuk mengambil daftar notifikasi dari backend
     async function fetchAndShowNotifications() {
         try {
-            // Gunakan API.getUnread (jika ada) atau fetch langsung
             const response = await fetch(`/muslim-qa/backend/controllers/NotificationController.php?action=getUnreadByUser&userId=${user.id}`);
             const result = await response.json();
 
             if (result.success && result.notifications.length > 0) {
-                // Jika ada notifikasi, tampilkan di dalam dropdown
-                notificationList.innerHTML = ''; // Kosongkan list
+                notificationList.innerHTML = '';
                 result.notifications.forEach(notif => {
                     const item = document.createElement('div');
                     item.className = `notification-item ${!notif.is_read ? 'unread' : ''}`;
@@ -50,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p>${notif.message}</p>
                         <small>${timeAgo(notif.created_at)}</small>
                     `;
-                    // Arahkan ke halaman pertanyaan saat notifikasi diklik
                     item.onclick = () => {
                         markAsRead(notif.id);
                         if (notif.question_id) {
@@ -68,10 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 5. Fungsi untuk mengupdate badge merah (DARI KODE LAMA KAMU, sedikit dimodifikasi)
+    // 5. Fungsi untuk mengupdate badge merah
     async function updateNotificationBadge() {
         try {
-            // Gunakan API.getUnreadCount atau fetch langsung
             const response = await fetch(`/muslim-qa/backend/controllers/NotificationController.php?action=getUnreadCount&userId=${user.id}`);
             const result = await response.json();
 
@@ -85,24 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Gagal mengupdate badge notifikasi:', error);
         }
     }
-
-    // 6. Fungsi untuk menandai notifikasi sudah dibaca (FUNGSI BARU)
-    async function markAsRead(notificationId) {
-        try {
-            await fetch(`/muslim-qa/backend/controllers/NotificationController.php?action=markAsRead&id=${notificationId}`, { method: 'POST' });
-            // Setelah ditandai, update badge dan daftar notifikasi
-            updateNotificationBadge();
-        } catch (error) {
-            console.error('Error saat menandai notifikasi:', error);
-        }
-    }
-
-    // 7. Fungsi helper untuk format waktu (DARI KODE LAMA KAMU)
+    
+    // Fungsi lainnya tetap sama (markAsRead, timeAgo, dll.)...
     function timeAgo(dateString) {
         const date = new Date(dateString);
         const now = new Date();
         const seconds = Math.floor((now - date) / 1000);
-        
         if (seconds < 60) return 'Baru saja';
         const minutes = Math.floor(seconds / 60);
         if (minutes < 60) return `${minutes} menit yang lalu`;
@@ -112,15 +95,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${days} hari yang lalu`;
     }
 
-    // 8. Sembunyikan dropdown jika klik di luar area
+    async function markAsRead(notificationId) {
+        try {
+            await fetch(`/muslim-qa/backend/controllers/NotificationController.php?action=markAsRead&id=${notificationId}`, { method: 'POST' });
+            updateNotificationBadge();
+        } catch (error) {
+            console.error('Error saat menandai notifikasi:', error);
+        }
+    }
+
     document.addEventListener('click', (event) => {
-        if (!notificationContainer.contains(event.target)) {
+        if (notificationContainer && !notificationContainer.contains(event.target)) {
             notificationDropdown.style.display = 'none';
         }
     });
 
-    // 9. Jalankan pengecekan notifikasi secara berkala
-    // Memanggil fungsi dari kode lama kamu
+    // Jalankan pengecekan notifikasi
     updateNotificationBadge();
-    setInterval(updateNotificationBadge, 30000); // Cek setiap 30 detik
+    setInterval(updateNotificationBadge, 30000);
 });
